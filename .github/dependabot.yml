@@ -1,0 +1,22 @@
+version: 2
+
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+    assignees:
+      - moorthy-rm
+
+    labels:
+      - dependencies
+      - security
+
+    commit-message:
+      prefix: "deps"
+
+    open-pull-requests-limit: 5
+
+    ignore:
+      - dependency-name: "boto3"
