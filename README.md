@@ -1,16 +1,17 @@
 # Git-Github-Security-Best-Security-Practices
 Contents
-.gitignore
-Native Git Pre-Commit Hooks (Custom Scripts)
-Block commits with Gitleaks
-Gitleaks -> Repository & History Scanning
-Gitleaks in GitHub Actions
-Branch Protection Rules
-RBAC
-Mandatory Reviews
-CODEOWNERS
-Dependabot
-.gitignore — First Line of Defense
+# .gitignore
+# Native Git Pre-Commit Hooks (Custom Scripts)
+# Block commits with Gitleaks
+# Gitleaks -> Repository & History Scanning
+# Gitleaks in GitHub Actions
+# Branch Protection Rules
+# RBAC
+# Mandatory Reviews
+# CODEOWNERS
+# Dependabot
+
+# .gitignore — First Line of Defense
 Purpose
 Prevent sensitive files from ever being tracked by Git.
 
@@ -25,6 +26,7 @@ terraform.tfstate
 node_modules/
 dist/
 Demo
+
 echo "AWS_SECRET_ACCESS_KEY=123" > .env
 git status
 Add .gitignore:
@@ -35,7 +37,7 @@ git status
 
 ⚠️ .gitignore does NOT protect secrets already committed.
 
-Native Git Pre-Commit Hooks (Custom Script)
+# Native Git Pre-Commit Hooks (Custom Script)
 What This Is
 A pre-commit hook is a script located at:
 
@@ -46,7 +48,7 @@ Exit Codes
 Code	Result
 0	Commit allowed
 ≠0	Commit blocked
-Demo — Minimal Native Secret Detector
+# Demo — Minimal Native Secret Detector
 cat > .git/hooks/pre-commit << 'EOF'
 #!/bin/bash
 
@@ -70,7 +72,7 @@ git add test.txt
 git commit -m "test commit"
 ❌ Commit blocked.
 
-Gitleaks — Blocking Commits (Native Hook)
+# Gitleaks — Blocking Commits (Native Hook)
 Replace Pre-Commit Hook with Gitleaks
 Install pre-commit from https://pre-commit.com/#install
 
@@ -93,7 +95,7 @@ git add secrets.env
 git commit -m "adding secrets"
 ❌ Commit blocked.
 
-Gitleaks — Repository & History Scanning
+# Gitleaks — Repository & History Scanning
 Create a custom rules file - custom-rules.toml
 [[rules]]
 id = "generic-password"
@@ -103,7 +105,7 @@ tags = ["password", "custom"]
 Run the gitleaks command
 gitleaks detect --config custom-rules.toml
 
-Gitleaks in GitHub Actions
+# Gitleaks in GitHub Actions
 GitHub Action
 Check out the official Gitleaks GitHub Action
 
@@ -121,7 +123,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE}} # Only required for Organizations, not personal accounts.
-Branch Protection Rules
+
+# Branch Protection Rules
 Enforce:
 
 No direct pushes to main
@@ -134,7 +137,8 @@ Admin	Repo settings
 Maintainer	Merge PRs
 Developer	PR only
 Auditor	Read-only
-Mandatory Reviews
+
+# Mandatory Reviews
 Best practices:
 
 Minimum 1–2 reviewers
@@ -143,7 +147,7 @@ Security review for auth, infra, CI
 CODEOWNERS
 /.github/ @security-team
 /terraform/ @cloud-team
-Dependabot
+# Dependabot
 version: 2
 updates:
   - package-ecosystem: "npm"
